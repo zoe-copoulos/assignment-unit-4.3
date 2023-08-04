@@ -61,6 +61,12 @@ describe('Automated tests', function () {
             expect(basket.length).to.be.greaterThan(0);
             assert.equal(basket[basket.length - 1], 'Kale');
         });
+        it('`addItem`is able to add anything, not just Kale...', function () {
+            let { basket, addItem } = testItems;
+            addItem('Chocolate');
+            expect(basket.length).to.be.greaterThan(0);
+            assert.equal(basket[basket.length - 1], 'Chocolate');
+        });
     });
     describe('`addItem` function returns true', function () {
         it('`addItem` function returns true', function () {
