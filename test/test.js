@@ -58,14 +58,11 @@ describe('Automated tests', function () {
         it('`addItem` function takes in an item, adds to the array', function () {
             let { basket, addItem } = testItems;
             addItem('Kale');
-            expect(basket.length).to.be.greaterThan(0);
             assert.equal(basket[basket.length - 1], 'Kale');
-        });
-        it('`addItem`is able to add anything, not just Kale...', function () {
-            let { basket, addItem } = testItems;
-            addItem('Chocolate');
             expect(basket.length).to.be.greaterThan(0);
-            assert.equal(basket[basket.length - 1], 'Chocolate');
+
+            addItem('Chocolate');
+            expect(basket, 'addItem() needs to be able to take in parameters').to.include.members(['Kale', 'Chocolate']);
         });
     });
     describe('`addItem` function returns true', function () {
