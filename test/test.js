@@ -38,13 +38,15 @@ describe('Automated tests', function () {
     before(function () {
         // runs once before the first test in this block
         let { basket } = testItems;
-        if(typeof basket === 'array') {
+        if (typeof basket === 'object' && Array.isArray(basket)) {
             originalBasket = [...basket];
-        }    
+            basket.length = 0;
+        }  
     });
     after(function () {
+        let { basket } = testItems;
         // runs once after the last test in this block
-        if(typeof basket === 'array') {
+        if (typeof basket === 'object' && Array.isArray(basket)) {
             basket = [...originalBasket];
         } 
     });
