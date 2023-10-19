@@ -97,8 +97,8 @@ describe('Automated tests', function () {
             assert.equal(result.includes('Spinach'), true);
         });
     });
-    describe(`"empty" function empties the basket array`, function () {
-        it('"empty" function empties the basket array', function() {
+    describe('`empty` function empties the `basket` array', function () {
+        it('`empty` function empties the `basket` array', function() {
             let { basket, empty } = testItems;
             basket.push('tacos', 'burritos');
             empty();
