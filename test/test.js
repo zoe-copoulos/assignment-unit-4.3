@@ -58,7 +58,7 @@ describe('Automated tests', function () {
         it('`addItem` function takes in an item, adds to the array', function () {
             let { basket, addItem } = testItems;
             addItem('Kale');
-            assert.equal(basket[basket.length - 1], 'Kale');
+            expect(basket, 'addItem() needs to be able add an item').to.include.members(['Kale']);
             expect(basket.length).to.be.greaterThan(0);
 
             addItem('Chocolate');
@@ -97,6 +97,14 @@ describe('Automated tests', function () {
             assert.equal(result.includes('Spinach'), true);
         });
     });
+    describe(`"empty" function empties the basket array`, function () {
+        it('"empty" function empties the basket array', function() {
+            let { basket, empty } = testItems;
+            basket.push('tacos', 'burritos');
+            empty();
+            expect(basket.length, "empty() needs to empty the basket").to.equal(0);
+        })
+    })
     describe(`Functions are tested using console.log()`, function () {
         it(`Functions are tested using console.log()`, function () {
             if (typeof counter === 'undefined') {
