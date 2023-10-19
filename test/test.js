@@ -88,7 +88,14 @@ describe('Automated tests', function () {
                 let tempLog = console.log;
                 
                 // Temporarily override console.log
-                console.log = (item) => result += item;
+                console.log = (...rest) => {
+                    if (rest.length > 1) {
+                        result += rest.reduce((acc = '', item) => acc += item);
+                    } else if (rest.length === 1) {
+                        result += rest[0];
+
+                    } 
+                }
                 listItems(basket);
                 // Set it back to default
                 console.log = tempLog;
