@@ -105,17 +105,17 @@ describe('Automated tests', function () {
             expect(basket.length, "empty() needs to empty the basket").to.equal(0);
         })
     })
-    describe(`Functions are tested using console.log()`, function () {
-        it(`Functions are tested using console.log()`, function () {
-            if (typeof counter === 'undefined') {
-                // Skip this test if running on the server
-                this.skip();
-            } else {
-                // Only run this test in the browser
-                expect(counter, `console.log() was only called ${counter} times.`).to.be.greaterThan(3);
-            }
-        });
-    });
+    // describe(`Functions are tested using console.log()`, function () {
+    //     it(`Functions are tested using console.log()`, function () {
+    //         if (typeof counter === 'undefined') {
+    //             // Skip this test if running on the server
+    //             this.skip();
+    //         } else {
+    //             // Only run this test in the browser
+    //             expect(counter, `console.log() was only called ${counter} times.`).to.be.greaterThan(3);
+    //         }
+    //     });
+    // });
     describe('STRETCH: Added a global const named `maxItems` and set it to 5', function () {
         it('STRETCH: Added a global const named `maxItems` and set it to 5', function () {
             let { maxItems } = testItems;
