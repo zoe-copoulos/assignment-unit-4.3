@@ -30,6 +30,7 @@ Update the `cart.js` file to do the following:
 
 - Create a function called `empty`. It should:
   - reset the `basket` to an empty array
+  - do not use `basket = []` to reset the array
 
 > __IMPORTANT__
 > Make sure that you are writing code *in the file* to test every function that you write!
