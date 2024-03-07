@@ -129,7 +129,7 @@ describe('Automated tests', function () {
         it('STRETCH: Added a global const named `maxItems` and set it to 5', function () {
             let { maxItems } = testItems;
             if (maxItems === undefined) {
-                // Skip the stetch goal if not attempted
+                // Skip the stretch goal if not attempted
                 this.skip();
             } else {
                 // Only add the stretch goal if attempted
@@ -142,7 +142,7 @@ describe('Automated tests', function () {
         it('STRETCH: `isFull` function correctly returns boolean `false`', function () {
             let { isFull, basket } = testItems;
             if (isFull === undefined) {
-                // Skip the stetch goal if not attempted
+                // Skip the stretch goal if not attempted
                 this.skip();
             } else {
                 basket.length = 0;
@@ -157,7 +157,7 @@ describe('Automated tests', function () {
         it('STRETCH: `isFull` function correctly returns boolean `true`', function () {
             let { isFull, basket } = testItems;
             if (isFull === undefined) {
-                // Skip the stetch goal if not attempted
+                // Skip the stretch goal if not attempted
                 this.skip();
             } else {
                 basket.length = 0;
@@ -173,7 +173,7 @@ describe('Automated tests', function () {
         it('STRETCH: `addItem` function updated to use `isFull` and return `false` when full', function () {
             let { maxItems, isFull, basket, addItem } = testItems;
             if (maxItems === undefined) {
-                // Skip the stetch goal if not attempted
+                // Skip the stretch goal if not attempted
                 this.skip();
             } else {
                 // clear basket
@@ -190,7 +190,7 @@ describe('Automated tests', function () {
         it('STRETCH: `removeItem` function removes & returns the first matching item from `basket`', function () {
             let { removeItem, isFull, basket, addItem } = testItems;
             if (removeItem === undefined) {
-                // Skip the stetch goal if not attempted
+                // Skip the stretch goal if not attempted
                 this.skip();
             } else {
                 // clear basket
@@ -208,7 +208,7 @@ describe('Automated tests', function () {
         it('STRETCH: `removeItem` function returns null when item is not found', function () {
             let { removeItem, isFull, basket, addItem } = testItems;
             if (removeItem === undefined) {
-                // Skip the stetch goal if not attempted
+                // Skip the stretch goal if not attempted
                 this.skip();
             } else {
                 // clear basket
