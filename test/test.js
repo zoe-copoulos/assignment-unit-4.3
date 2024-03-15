@@ -27,6 +27,7 @@ if (typeof window === 'object') {
     testItems = require('../assignment/scripts/cart.js');
 }
 let originalBasket;
+let originalLog;
 /**
  * Put all tests within this describe.
  */
@@ -38,6 +39,8 @@ describe('Automated tests', function () {
     before(function () {
         // runs once before the first test in this block
         let { basket } = testItems;
+        originalLog = console.log;
+        console.log = () => {};
         if (typeof basket === 'object' && Array.isArray(basket)) {
             originalBasket = [...basket];
             basket.length = 0;
@@ -49,6 +52,7 @@ describe('Automated tests', function () {
         if (typeof basket === 'object' && Array.isArray(basket)) {
             basket = [...originalBasket];
         } 
+        console.log = originalLog;
     });
     describe('Created global variable for `basket` as empty array', function () {
         it('Created global variable for `basket` as empty array', function () {
