@@ -10,13 +10,14 @@ const {
 
 // Custom output to match our rubric
 class MyReporter {
+    _logger = console.log // So that we always have something to log with
     constructor(runner) {
         const stats = runner.stats;
         const errors = [];
         runner
             .on(EVENT_TEST_FAIL, (test, err) => {
                 errors.push(err);
-                console.log(
+                this._logger(
                     `\x1b[31m`,
                     `| ${test.parent.title} | no, see note ${errors.length} |`,
                     `\x1b[0m`
@@ -24,30 +25,30 @@ class MyReporter {
                 // console.log(test)
             })
             .on(EVENT_TEST_PASS, (test, err) => {
-                console.log(
+                this._logger(
                     `\x1b[32m`,
                     `| ${test.parent.title} | yes |`,
                     `\x1b[0m`
                 );
             })
             .once(EVENT_RUN_BEGIN, () => {
-                console.log('');
-                console.log(`---
+                this._logger('');
+                this._logger(`---
 | Part 3 - Cart System | Complete? |
 | --- | :---: |`);
-                console.log(
+this._logger(
                     `\x1b[32m`,
                     `| Runs in browser without console errors | yes |`,
                     `\x1b[0m`
                 );
             })
             .once(EVENT_RUN_END, () => {
-                console.log('');
+                this._logger('');
                 // console.log(`end: ${stats.passes}/${stats.passes + stats.failures} ok`);
 
                 errors.map((err, i) => {
-                    console.log('');
-                    console.log(`${i + 1}) ${err}`);
+                    this._logger('');
+                    this._logger(`${i + 1}) ${err}`);
                 });
             });
     }
