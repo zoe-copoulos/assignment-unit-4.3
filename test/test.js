@@ -180,19 +180,31 @@ describe('Automated tests', function () {
   });
   describe('STRETCH: `addItem` function updated to use `isFull` and return `false` for adding an item if isFull is `true`', function () {
     it('STRETCH: `addItem` function updated to use `isFull` and return `false` for adding an item if isFull is `true`', function () {
-      let { maxItems, basket, addItem } = testItems;
-      if (maxItems === undefined) {
-        // Skip the stretch goal if not attempted
-        this.skip();
-      } else {
-        // clear basket
-        basket.length = 0;
-        basket.push('Kale', 'Spinach', 'Swiss Chard', 'Arugula', 'Bok choy');
-        const result = addItem('Dandelion greens');
-        expect(result, 'addItem() does not return anything').to.exist;
-        expect(result).to.be.a('boolean');
-        assert.equal(result, false);
+      let { maxItems, basket, addItem, isFull } = testItems;
+    if (maxItems === undefined) {
+      // Skip the stretch goal if not attempted
+      this.skip();
+    } else {
+      // clear basket
+      basket.length = 0;
+
+      // fill basket to maxItems
+      for (let i = 0; i < maxItems; i++) {
+        basket.push(`Item ${i + 1}`);
       }
+
+      expect(isFull()).to.be.true;
+
+      // add another item
+      const result = addItem('Clementine');
+
+      // addItem returns false when basket is full
+      expect(result).to.be.false;
+
+      // basket shouldn't change
+      expect(basket.length).to.equal(maxItems);
+      expect(basket).to.not.include('Extra Item');
+    }
     });
   });
   describe('STRETCH: `removeItem` function removes & returns the first matching item from `basket`', function () {
