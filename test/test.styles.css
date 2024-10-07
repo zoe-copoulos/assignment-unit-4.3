@@ -1,7 +1,7 @@
 #mocha .test a.replay {
-    display: none;
+  display: none;
 }
 
 #mocha h1 a {
-    pointer-events: none;
+  pointer-events: none;
 }

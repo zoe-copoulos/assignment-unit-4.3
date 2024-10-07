@@ -1,30 +1,30 @@
 /**
  * We have to do a bit of work upfront to allow the tests
- * to run in the browser and in Node.js. 
+ * to run in the browser and in Node.js.
  */
 let assert, expect;
 let testItems = {};
 if (typeof window === 'object') {
-    // Run tests in browser
-    assert = chai.assert;
-    expect = chai.expect;
-    mocha.setup('bdd');
-    testItems = {
-        // Functions
-        addItem: typeof addItem !== 'undefined' ? addItem : undefined,
-        listItems: typeof listItems !== 'undefined' ? listItems : undefined,
-        empty: typeof empty !== 'undefined' ? empty : undefined,
-        isFull: typeof isFull !== 'undefined' ? isFull : undefined,
-        removeItem: typeof removeItem !== 'undefined' ? removeItem : undefined,
-        // Variables
-        maxItems: typeof maxItems !== 'undefined' ? maxItems : undefined,
-        basket: typeof basket !== 'undefined' ? basket : undefined,
-    };
+  // Run tests in browser
+  assert = chai.assert;
+  expect = chai.expect;
+  mocha.setup('bdd');
+  testItems = {
+    // Functions
+    addItem: typeof addItem !== 'undefined' ? addItem : undefined,
+    listItems: typeof listItems !== 'undefined' ? listItems : undefined,
+    empty: typeof empty !== 'undefined' ? empty : undefined,
+    isFull: typeof isFull !== 'undefined' ? isFull : undefined,
+    removeItem: typeof removeItem !== 'undefined' ? removeItem : undefined,
+    // Variables
+    maxItems: typeof maxItems !== 'undefined' ? maxItems : undefined,
+    basket: typeof basket !== 'undefined' ? basket : undefined,
+  };
 } else {
-    // Run tests in Node.js
-    assert = require('assert');
-    expect = require('chai').expect;
-    testItems = require('../assignment/scripts/cart.js');
+  // Run tests in Node.js
+  assert = require('assert');
+  expect = require('chai').expect;
+  testItems = require('../assignment/scripts/cart.js');
 }
 let originalBasket;
 let originalLog;
@@ -32,203 +32,208 @@ let originalLog;
  * Put all tests within this describe.
  */
 describe('Automated tests', function () {
-    /**
-     * We need to modify the the basket for tests. Make a copy of
-     * the original and set it back after the tests are run.
-     */
-    before(function () {
-        // runs once before the first test in this block
-        let { basket } = testItems;
-        originalLog = console.log;
-        console.log = () => {};
-        if (typeof basket === 'object' && Array.isArray(basket)) {
-            originalBasket = [...basket];
-            basket.length = 0;
-        }  
+  /**
+   * We need to modify the the basket for tests. Make a copy of
+   * the original and set it back after the tests are run.
+   */
+  before(function () {
+    // runs once before the first test in this block
+    let { basket } = testItems;
+    originalLog = console.log;
+    console.log = () => {};
+    if (typeof basket === 'object' && Array.isArray(basket)) {
+      originalBasket = [...basket];
+      basket.length = 0;
+    }
+  });
+  after(function () {
+    let { basket } = testItems;
+    // runs once after the last test in this block
+    if (typeof basket === 'object' && Array.isArray(basket)) {
+      basket = [...originalBasket];
+    }
+    console.log = originalLog;
+  });
+  describe('Created global variable for `basket` as empty array', function () {
+    it('Created global variable for `basket` as empty array', function () {
+      let { basket } = testItems;
+      expect(basket).to.be.a('array');
     });
-    after(function () {
-        let { basket } = testItems;
-        // runs once after the last test in this block
-        if (typeof basket === 'object' && Array.isArray(basket)) {
-            basket = [...originalBasket];
-        } 
-        console.log = originalLog;
-    });
-    describe('Created global variable for `basket` as empty array', function () {
-        it('Created global variable for `basket` as empty array', function () {
-            let { basket } = testItems;
-            expect(basket).to.be.a('array');
-        });
-    });
-    describe('`addItem` function takes in an item, adds to the array', function () {
-        it('`addItem` function takes in an item, adds to the array', function () {
-            let { basket, addItem } = testItems;
-            addItem('Kale');
-            expect(basket, 'addItem() needs to be able add an item').to.include.members(['Kale']);
-            expect(basket.length).to.be.greaterThan(0);
+  });
+  describe('`addItem` function takes in an item, adds to the array', function () {
+    it('`addItem` function takes in an item, adds to the array', function () {
+      let { basket, addItem } = testItems;
+      addItem('Kale');
+      expect(
+        basket,
+        'addItem() needs to be able add an item'
+      ).to.include.members(['Kale']);
+      expect(basket.length).to.be.greaterThan(0);
 
-            addItem('Chocolate');
-            expect(basket, 'addItem() needs to be able to take in parameters').to.include.members(['Kale', 'Chocolate']);
-        });
+      addItem('Chocolate');
+      expect(
+        basket,
+        'addItem() needs to be able to take in parameters'
+      ).to.include.members(['Kale', 'Chocolate']);
     });
-    describe('`addItem` function returns true', function () {
-        it('`addItem` function returns true', function () {
-            let { addItem } = testItems;
-            const result = addItem('Kale');
-            expect(result, 'addItem() does not return anything').to.exist;
-            expect(result).to.be.a('boolean');
-            assert.equal(result, true);
-        });
+  });
+  describe('`addItem` function returns true', function () {
+    it('`addItem` function returns true', function () {
+      let { addItem } = testItems;
+      const result = addItem('Kale');
+      expect(result, 'addItem() does not return anything').to.exist;
+      expect(result).to.be.a('boolean');
+      assert.equal(result, true);
     });
-    describe('`listItems` loops over `basket` array and logs each item', function () {
-        it('`listItems` loops over `basket` array and logs each item', function () {
-            let { listItems, basket } = testItems;
-            let result;
-            if (typeof basket !== 'undefined') {
-                result = '';
-                // clear basket
-                basket.length = 0;
-                basket.push('Kale', 'Spinach');
-                let tempLog = console.log;
-                
-                // Temporarily override console.log
-                console.log = (...rest) => {
-                    if (rest.length > 1) {
-                        result += rest.reduce((acc = '', item) => acc += item);
-                    } else if (rest.length === 1) {
-                        result += rest[0];
+  });
+  describe('`listItems` loops over `basket` array and logs each item', function () {
+    it('`listItems` loops over `basket` array and logs each item', function () {
+      let { listItems, basket } = testItems;
+      let result;
+      if (typeof basket !== 'undefined') {
+        result = '';
+        // clear basket
+        basket.length = 0;
+        basket.push('Kale', 'Spinach');
+        let tempLog = console.log;
 
-                    } 
-                }
-                listItems(basket);
-                // Set it back to default
-                console.log = tempLog;
-            }
-            expect(result, 'listItems() does not console log anything').to.exist;
-            expect(result).to.be.a('string');
-            assert.equal(result.includes('Kale'), true);
-            assert.equal(result.includes('Spinach'), true);
-        });
+        // Temporarily override console.log
+        console.log = (...rest) => {
+          if (rest.length > 1) {
+            result += rest.reduce((acc = '', item) => (acc += item));
+          } else if (rest.length === 1) {
+            result += rest[0];
+          }
+        };
+        listItems(basket);
+        // Set it back to default
+        console.log = tempLog;
+      }
+      expect(result, 'listItems() does not console log anything').to.exist;
+      expect(result).to.be.a('string');
+      assert.equal(result.includes('Kale'), true);
+      assert.equal(result.includes('Spinach'), true);
     });
-    describe('`empty` function empties the `basket` array', function () {
-        it('`empty` function empties the `basket` array', function() {
-            let { basket, empty } = testItems;
-            basket.push('tacos', 'burritos');
-            empty();
-            expect(basket.length, "empty() needs to empty the basket").to.equal(0);
-        })
-    })
-    // describe(`Functions are tested using console.log()`, function () {
-    //     it(`Functions are tested using console.log()`, function () {
-    //         if (typeof counter === 'undefined') {
-    //             // Skip this test if running on the server
-    //             this.skip();
-    //         } else {
-    //             // Only run this test in the browser
-    //             expect(counter, `console.log() was only called ${counter} times.`).to.be.greaterThan(3);
-    //         }
-    //     });
-    // });
-    describe('STRETCH: Added a global const named `maxItems` and set it to 5', function () {
-        it('STRETCH: Added a global const named `maxItems` and set it to 5', function () {
-            let { maxItems } = testItems;
-            if (maxItems === undefined) {
-                // Skip the stretch goal if not attempted
-                this.skip();
-            } else {
-                // Only add the stretch goal if attempted
-                expect(maxItems).to.be.a('number');
-                assert.equal(maxItems, 5);
-            }
-        });
+  });
+  describe('`empty` function empties the `basket` array', function () {
+    it('`empty` function empties the `basket` array', function () {
+      let { basket, empty } = testItems;
+      basket.push('tacos', 'burritos');
+      empty();
+      expect(basket.length, 'empty() needs to empty the basket').to.equal(0);
     });
-    describe('STRETCH: `isFull` function correctly returns boolean `false`', function () {
-        it('STRETCH: `isFull` function correctly returns boolean `false`', function () {
-            let { isFull, basket } = testItems;
-            if (isFull === undefined) {
-                // Skip the stretch goal if not attempted
-                this.skip();
-            } else {
-                basket.length = 0;
-                let result = isFull()
-                // Only add the stretch goal if attempted
-                expect(result).to.be.a('boolean');
-                assert.equal(result, false);
-            }
-        });
+  });
+  // describe(`Functions are tested using console.log()`, function () {
+  //     it(`Functions are tested using console.log()`, function () {
+  //         if (typeof counter === 'undefined') {
+  //             // Skip this test if running on the server
+  //             this.skip();
+  //         } else {
+  //             // Only run this test in the browser
+  //             expect(counter, `console.log() was only called ${counter} times.`).to.be.greaterThan(3);
+  //         }
+  //     });
+  // });
+  describe('STRETCH: Added a global const named `maxItems` and set it to 5', function () {
+    it('STRETCH: Added a global const named `maxItems` and set it to 5', function () {
+      let { maxItems } = testItems;
+      if (maxItems === undefined) {
+        // Skip the stretch goal if not attempted
+        this.skip();
+      } else {
+        // Only add the stretch goal if attempted
+        expect(maxItems).to.be.a('number');
+        assert.equal(maxItems, 5);
+      }
     });
-    describe('STRETCH: `isFull` function correctly returns boolean `true`', function () {
-        it('STRETCH: `isFull` function correctly returns boolean `true`', function () {
-            let { isFull, basket } = testItems;
-            if (isFull === undefined) {
-                // Skip the stretch goal if not attempted
-                this.skip();
-            } else {
-                basket.length = 0;
-                basket.push('Kale', 'Spinach', 'Swiss Chard', 'Arugula', 'Bok choy');
-                let result = isFull()
-                // Only add the stretch goal if attempted
-                expect(result).to.be.a('boolean');
-                assert.equal(result, true);
-            }
-        });
+  });
+  describe('STRETCH: `isFull` function correctly returns boolean `false`', function () {
+    it('STRETCH: `isFull` function correctly returns boolean `false`', function () {
+      let { isFull, basket } = testItems;
+      if (isFull === undefined) {
+        // Skip the stretch goal if not attempted
+        this.skip();
+      } else {
+        basket.length = 0;
+        let result = isFull();
+        // Only add the stretch goal if attempted
+        expect(result).to.be.a('boolean');
+        assert.equal(result, false);
+      }
     });
-    describe('STRETCH: `addItem` function updated to use `isFull` and return `false` when full', function () {
-        it('STRETCH: `addItem` function updated to use `isFull` and return `false` when full', function () {
-            let { maxItems, isFull, basket, addItem } = testItems;
-            if (maxItems === undefined) {
-                // Skip the stretch goal if not attempted
-                this.skip();
-            } else {
-                // clear basket
-                basket.length = 0;
-                basket.push('Kale', 'Spinach', 'Swiss Chard', 'Arugula', 'Bok choy');
-                const result = addItem('Dandelion greens');
-                expect(result, 'addItem() does not return anything').to.exist;
-                expect(result).to.be.a('boolean');
-                assert.equal(result, false);
-            }
-        });
+  });
+  describe('STRETCH: `isFull` function correctly returns boolean `true`', function () {
+    it('STRETCH: `isFull` function correctly returns boolean `true`', function () {
+      let { isFull, basket } = testItems;
+      if (isFull === undefined) {
+        // Skip the stretch goal if not attempted
+        this.skip();
+      } else {
+        basket.length = 0;
+        basket.push('Kale', 'Spinach', 'Swiss Chard', 'Arugula', 'Bok choy');
+        let result = isFull();
+        // Only add the stretch goal if attempted
+        expect(result).to.be.a('boolean');
+        assert.equal(result, true);
+      }
     });
-    describe('STRETCH: `removeItem` function removes & returns the first matching item from `basket`', function () {
-        it('STRETCH: `removeItem` function removes & returns the first matching item from `basket`', function () {
-            let { removeItem, isFull, basket, addItem } = testItems;
-            if (removeItem === undefined) {
-                // Skip the stretch goal if not attempted
-                this.skip();
-            } else {
-                // clear basket
-                basket.length = 0;
-                basket.push('Kale', 'Spinach', 'Swiss Chard', 'Arugula', 'Bok choy');
-                const result = removeItem('Spinach');
-                expect(result, 'removeItem() does not return anything').to.exist;
-                expect(result).to.be.a('string');
-                assert.equal(result, 'Spinach');
-                assert.equal(basket.length, 4);
-            }
-        });
+  });
+  describe('STRETCH: `addItem` function updated to use `isFull` and return `false` for adding an item if isFull is `true`', function () {
+    it('STRETCH: `addItem` function updated to use `isFull` and return `false` for adding an item if isFull is `true`', function () {
+      let { maxItems, basket, addItem } = testItems;
+      if (maxItems === undefined) {
+        // Skip the stretch goal if not attempted
+        this.skip();
+      } else {
+        // clear basket
+        basket.length = 0;
+        basket.push('Kale', 'Spinach', 'Swiss Chard', 'Arugula', 'Bok choy');
+        const result = addItem('Dandelion greens');
+        expect(result, 'addItem() does not return anything').to.exist;
+        expect(result).to.be.a('boolean');
+        assert.equal(result, false);
+      }
     });
-    describe('STRETCH: `removeItem` function returns null when item is not found', function () {
-        it('STRETCH: `removeItem` function returns null when item is not found', function () {
-            let { removeItem, isFull, basket, addItem } = testItems;
-            if (removeItem === undefined) {
-                // Skip the stretch goal if not attempted
-                this.skip();
-            } else {
-                // clear basket
-                basket.length = 0;
-                basket.push('Kale', 'Spinach', 'Swiss Chard', 'Arugula', 'Bok choy');
-                const result = removeItem('Dandelion greens');
-                assert.equal(result, null);
-                assert.equal(basket.length, 5);
-            }
-        });
+  });
+  describe('STRETCH: `removeItem` function removes & returns the first matching item from `basket`', function () {
+    it('STRETCH: `removeItem` function removes & returns the first matching item from `basket`', function () {
+      let { removeItem, basket } = testItems;
+      if (removeItem === undefined) {
+        // Skip the stretch goal if not attempted
+        this.skip();
+      } else {
+        // clear basket
+        basket.length = 0;
+        basket.push('Kale', 'Spinach', 'Swiss Chard', 'Arugula', 'Bok choy');
+        const result = removeItem('Spinach');
+        expect(result, 'removeItem() does not return anything').to.exist;
+        expect(result).to.be.a('string');
+        assert.equal(result, 'Spinach');
+        assert.equal(basket.length, 4);
+      }
     });
+  });
+  describe('STRETCH: `removeItem` function returns null when item is not found', function () {
+    it('STRETCH: `removeItem` function returns null when item is not found', function () {
+      let { removeItem, basket } = testItems;
+      if (removeItem === undefined) {
+        // Skip the stretch goal if not attempted
+        this.skip();
+      } else {
+        // clear basket
+        basket.length = 0;
+        basket.push('Kale', 'Spinach', 'Swiss Chard', 'Arugula', 'Bok choy');
+        const result = removeItem('Dandelion greens');
+        assert.equal(result, null);
+        assert.equal(basket.length, 5);
+      }
+    });
+  });
 });
 
 /**
  * If running the tests in the browser, call mocha.run()
  */
 if (typeof window === 'object') {
-    mocha.run();
+  mocha.run();
 }
